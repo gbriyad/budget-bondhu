@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  original_price: 1.5
+  discount_price: 1.5
+  product: one
+
+two:
+  original_price: 1.5
+  discount_price: 1.5
+  product: two
