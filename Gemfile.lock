@@ -106,6 +106,7 @@ GEM
     capybara-mechanize (1.13.0)
       capybara (>= 3.0.0, < 4)
       mechanize (~> 2.8.5)
+    chartkick (5.0.2)
     chronic (0.10.2)
     cliver (0.3.2)
     coderay (1.1.3)
@@ -126,11 +127,16 @@ GEM
     erubi (1.12.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    groupdate (2.5.3)
+      activesupport (>= 3)
     headless (2.3.1)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    importmap-rails (1.2.1)
+      actionpack (>= 6.0.0)
+      railties (>= 6.0.0)
     io-console (0.6.0)
     irb (1.7.1)
       reline (>= 0.3.0)
@@ -237,6 +243,13 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    slim (5.1.1)
+      temple (~> 0.10.0)
+      tilt (>= 2.1.0)
+    slim-rails (3.6.2)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      slim (>= 3.0, < 6.0, != 5.0.0)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -245,7 +258,9 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     sqlite3 (1.6.3-x86_64-linux)
+    temple (0.10.2)
     thor (1.2.2)
+    tilt (2.2.0)
     timeout (0.4.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -269,6 +284,7 @@ GEM
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
+    will_paginate (4.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.8)
@@ -279,20 +295,25 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   capybara
+  chartkick (~> 5.0, >= 5.0.2)
   debug
-  delayed_job_active_record
+  delayed_job_active_record (~> 4.1, >= 4.1.7)
+  groupdate (~> 2.5, >= 2.5.2)
+  importmap-rails (~> 1.2)
   jbuilder
   kimurai!
   pg (~> 1.5, >= 1.5.3)
   puma (~> 5.0)
   rails (~> 7.0.4)
   selenium-webdriver
+  slim-rails (~> 3.6, >= 3.6.2)
   sprockets-rails
   sqlite3 (~> 1.4)
   tzinfo-data
   web-console
   webdrivers
-  whenever
+  whenever (~> 1.0)
+  will_paginate (~> 4.0)
 
 RUBY VERSION
    ruby 3.1.3p185

@@ -1,0 +1,8 @@
+h1
+  | Editing price
+= render "form", price: @price
+br
+div
+  = link_to "Show this price", @price
+  |  | 
+  = link_to "Back to prices", prices_path

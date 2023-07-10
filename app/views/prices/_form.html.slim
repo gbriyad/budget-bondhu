@@ -1,0 +1,21 @@
+= form_with(model: price) do |form|
+  - if price.errors.any?
+    div[style="color: red"]
+      h2
+        = pluralize(price.errors.count, "error")
+        |  prohibited this price from being saved:
+      ul
+        - price.errors.each do |error|
+          li
+            = error.full_message
+  div
+    = form.label :original_price, style: "display: block"
+    = form.text_field :original_price
+  div
+    = form.label :discount_price, style: "display: block"
+    = form.text_field :discount_price
+  div
+    = form.label :product_id, style: "display: block"
+    = form.text_field :product_id
+  div
+    = form.submit

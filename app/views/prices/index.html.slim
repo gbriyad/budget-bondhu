@@ -1,0 +1,10 @@
+p[style="color: green"]
+  = notice
+h1
+  | Prices
+#prices
+  - @prices.each do |price|
+    = render price
+    p
+      = link_to "Show this price", price
+= link_to "New price", new_price_path

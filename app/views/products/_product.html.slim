@@ -1,0 +1,26 @@
+| <div id="
+= dom_id product
+| "> 
+p
+  strong
+    | Name:
+  = product.name
+p
+  strong
+    | Quantity:
+  = product.quantity
+p
+  strong
+    | Category:
+  = product.category
+p
+  strong
+    | Full category:
+  = product.full_category
+p
+  strong
+    | Image url:
+  = product.image_url
+
+= line_chart [{name: 'price', data: product.prices.pluck(:created_at, :original_price)},
+              {name: 'discount', data: product.prices.pluck(:created_at, :discount_price)}]
