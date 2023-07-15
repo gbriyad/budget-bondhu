@@ -3,7 +3,19 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @products = Product.paginate(page: params[:page])
+    product_ids = []
+    Product.includes(:prices).each do |product|
+      initial_price = product.prices.first.original_price
+      product.prices.each do |price|
+        if price.original_price != initial_price
+          product_ids << product.id
+          break
+        end
+      end
+    end
+
+    @products = Product.where(id: product_ids).includes(:prices)
+    @products = @products.paginate(page: params[:page])
   end
 
   # GET /products/1 or /products/1.json

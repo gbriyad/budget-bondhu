@@ -19,5 +19,7 @@ class ChaldalProductPriceUpdateJob < ApplicationJob
         product.save!
       end
     end
+
+    # Spider::ChaldalProductPriceSpiderTest.crawl!
   end
 end

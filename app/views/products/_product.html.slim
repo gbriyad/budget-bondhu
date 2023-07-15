@@ -22,5 +22,5 @@ p
     | Image url:
   = product.image_url
 
-= line_chart [{name: 'price', data: product.prices.pluck(:created_at, :original_price)},
-              {name: 'discount', data: product.prices.pluck(:created_at, :discount_price)}]
+= line_chart [{name: 'price', data: product.prices.where("created_at >= ?", Time.now.beginning_of_day).pluck(:created_at, :original_price)},
+              {name: 'discount', data: product.prices.where("created_at >= ?", Time.now.beginning_of_day).pluck(:created_at, :discount_price)}], min: nil

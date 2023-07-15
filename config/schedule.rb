@@ -20,6 +20,6 @@ env :PATH, ENV['PATH']
 
 # Learn more: http://github.com/javan/whenever
 
-every 4.hours do
+every 1.day, at: %w[08:00 12:00 16:00 20:00] do
   runner 'ChaldalProductPriceUpdateJob.perform_now'
 end

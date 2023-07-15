@@ -3,7 +3,7 @@ module Spider
   require 'kimurai'
   require 'uri'
 
-  class ChaldalProductPriceSpider < Kimurai::Base
+  class ChaldalProductPriceSpiderTest < Kimurai::Base
     @name = "ChaldalProductPriceSpider"
     @engine = :selenium_chrome
     @start_urls = ["https://www.chaldal.com"]
@@ -18,10 +18,13 @@ module Spider
     }
 
     def parse(response, url:, data: {})
-      @timestamp = Time.now.utc
+      urls = []
+      @@mutex = Mutex.new
       response.css(".menu ul.level-0 li a").each do |a|
-        request_to :parse_product_or_category_page, url: absolute_url(a[:href], base: url)
+        urls << absolute_url(a[:href], base: url)
       end
+
+      in_parallel :parse_product_or_category_page, urls , threads: 3
     end
 
     def parse_product_or_category_page(response, url:, data: {})
@@ -59,7 +62,9 @@ module Spider
         end
 
         begin
-          @@product_handler.call(item)
+          @@mutex.synchronize do
+            @@product_handler.call(item)
+          end
         rescue => e
           Rails.logger.error e.message
           p e.message
@@ -67,17 +72,17 @@ module Spider
       end
     end
 
-    def save_to_csv(item)
-      file_name = "chaldal-#{@timestamp}.csv"
-      unless File.exist?(file_name)
-        CSV.open(file_name, "w") do |csv|
-          csv << item.keys
-        end
-      end
-      CSV.open(file_name, "a") do |csv|
-        csv << item.values
-      end
-    end
+    # def save_to_csv(item)
+    #   file_name = "chaldal-#{@timestamp}.csv"
+    #   unless File.exist?(file_name)
+    #     CSV.open(file_name, "w") do |csv|
+    #       csv << item.keys
+    #     end
+    #   end
+    #   CSV.open(file_name, "a") do |csv|
+    #     csv << item.values
+    #   end
+    # end
 
     def get_product_category(response)
       full_category = ''
@@ -113,10 +118,6 @@ module Spider
       response
     end
 
-    def self.start_crawl_and_get_products(&product_handler)
-      @@product_handler = product_handler # TODO: how not to use class variable ?
-      ChaldalProductPriceSpider.crawl!
-    end
   end
 end
-# Spider::ChaldalProductPriceSpider.crawl!
+# Spider::ChaldalProductPriceSpiderTest.crawl!

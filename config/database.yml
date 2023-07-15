@@ -13,7 +13,7 @@ development:
   <<: *default
   username: <%= ENV['DATABASE_USERNAME'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
-  database: product_price_analytics_development
+  database: product_price_analytics_production
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
