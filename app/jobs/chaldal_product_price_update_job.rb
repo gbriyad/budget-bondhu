@@ -12,9 +12,10 @@ class ChaldalProductPriceUpdateJob < ApplicationJob
 
         original_price = p[:price]&.gsub(/\D/, '')&.to_f
         discount_price = p[:discount_price]&.gsub(/\D/, '')&.to_f
+        lowest_price = discount_price.nil? ? original_price : discount_price
 
         unless product.prices.created_recently.any?
-          product.prices.create!(original_price: original_price, discount_price: discount_price)
+          product.prices.create!(original_price: original_price, discount_price: discount_price, lowest_price: lowest_price)
         end
         product.save!
       end

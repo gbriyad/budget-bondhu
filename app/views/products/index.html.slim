@@ -4,6 +4,7 @@ h1
   | Products
 #products
   - @products.each do |product|
+    = p product.change_rate, product.min_price, product.max_price
     = render product
     p
       = link_to "Show this product", product
