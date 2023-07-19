@@ -11,7 +11,7 @@ module Spider
       user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36",
       disable_images: true,
       restart_if: {
-        memory_limit: 700_000 # ~1.5GB
+        memory_limit: 800_000 # ~800mb
       },
       retry_request_errors: [StandardError],
       skip_duplicate_requests: true
@@ -28,6 +28,10 @@ module Spider
       if response.css(".category-links-wrapper").count > 0
         response.css(".category-links-wrapper a").each do |a|
           request_to :parse_product_or_category_page, url: absolute_url(a[:href], base: url)
+        rescue => e
+          Rails.logger.error e.message
+          p e.message
+          retry
         end
       else
         parse_product_list_page(response, url: url)
@@ -101,7 +105,7 @@ module Spider
 
       loop do
         browser.execute_script("window.scrollBy(0,10000)")
-        sleep(2)
+        sleep(3)
         response = browser.current_response
 
         new_count = response.css('.productPane .product').count
