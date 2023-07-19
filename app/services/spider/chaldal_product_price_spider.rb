@@ -11,7 +11,7 @@ module Spider
       user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36",
       disable_images: true,
       restart_if: {
-        memory_limit: 2_000_000 # ~1.5GB
+        memory_limit: 700_000 # ~1.5GB
       },
       retry_request_errors: [StandardError],
       skip_duplicate_requests: true
