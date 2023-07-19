@@ -37,3 +37,4 @@
 /config/credentials/development.key
 .env
 .idea
+/config/credentials/production.key
