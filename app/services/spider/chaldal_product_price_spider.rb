@@ -13,8 +13,7 @@ module Spider
       restart_if: {
         memory_limit: 800_000 # ~800mb
       },
-      retry_request_errors: [StandardError],
-      skip_duplicate_requests: true
+      retry_request_errors: [StandardError]
     }
 
     def parse(response, url:, data: {})
@@ -31,6 +30,9 @@ module Spider
         rescue => e
           Rails.logger.error e.message
           p e.message
+
+          Rails.logger.error 'retrying'
+          p 'retrying'
           retry
         end
       else
