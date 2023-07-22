@@ -5,6 +5,9 @@ class ProductsController < ApplicationController
   def index
     start_time = 1.week.ago
     @products = Product.get_profitable_products(start_time)
+    @categories = @products.pluck(:category).uniq
+
+    @products = @products.where(category: params[:categories]) if params[:categories].present?
     @products = @products.paginate(page: params[:page], per_page: 10)
 
     change_rates_map = Product.get_product_ids_to_price_change_rates(@products.pluck(:id), start_time)

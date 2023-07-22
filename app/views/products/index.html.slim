@@ -1,12 +1,25 @@
 p[style="color: green"]
   = notice
+
+= form_tag(products_path, method: :get, id: "category-form") do
+  h1 Filter Categories:
+  = collection_check_boxes(nil, :categories, @categories, :to_s, :to_s, { checked: params[:categories], include_hidden: false })
+
 h1
   | Products
 #products
   - @products.each do |product|
-    = p product.change_rate, product.min_price, product.max_price
     = render product
-    p
-      = link_to "Show this product", product
+      / p
+      /   = link_to "Show this product", product
 = will_paginate @products
-= link_to "New product", new_product_path
+/ = link_to "New product", new_product_path
+
+
+javascript:
+    document.addEventListener("DOMContentLoaded", function () {
+        var categoryForm = document.getElementById("category-form");
+        categoryForm.addEventListener("click", function (e) {
+            categoryForm.submit()
+        });
+    });

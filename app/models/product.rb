@@ -18,7 +18,7 @@ class Product < ApplicationRecord
     product_ids_to_avg_prices = Price.where("prices.created_at >= ?", start_time).group(:product_id).average(:lowest_price)
 
     last_price_ids = Price.where(product_id: product_ids).where("prices.created_at >= ?", start_time).group(:product_id).pluck('max(id)')
-    product_ids_to_last_prices = Price.where(id: last_price_ids).where("prices.created_at >= ?", 1.day.ago).pluck(:product_id, :lowest_price)
+    product_ids_to_last_prices = Price.where(id: last_price_ids).pluck(:product_id, :lowest_price)
 
     product_ids_to_last_prices.each do |product_id, last_price|
       avg_price = product_ids_to_avg_prices[product_id]
