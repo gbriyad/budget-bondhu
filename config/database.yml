@@ -11,6 +11,8 @@ default: &default
 
 development:
   <<: *default
+  host: 127.0.0.1
+  port: 5431
   username: <%= Rails.application.credentials.database_username %>
   password: <%= Rails.application.credentials.database_password %>
   database: product_price_analytics_production

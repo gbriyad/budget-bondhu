@@ -14,5 +14,5 @@ table
 
 
 
-= line_chart [{name: 'price', data: product.prices.pluck(:created_at, :original_price)},
-              {name: 'discount', data: product.prices.pluck(:created_at, :discount_price)}], min: nil
+= line_chart [{name: 'price', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :original_price)},
+              {name: 'discount', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :discount_price)}], min: nil, points: false

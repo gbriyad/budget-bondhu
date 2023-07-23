@@ -1,7 +1,11 @@
 p[style="color: green"]
   = notice
 
+
 = form_tag(products_path, method: :get, id: "category-form") do
+  h1 Time Period:
+  = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period])
+
   h1 Filter Categories:
   = collection_check_boxes(nil, :categories, @categories, :to_s, :to_s, { checked: params[:categories], include_hidden: false })
 
