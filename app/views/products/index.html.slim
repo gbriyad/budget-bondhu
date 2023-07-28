@@ -1,13 +1,16 @@
 p[style="color: green"]
   = notice
+= form_tag(products_path, method: :get, id: "products-filter-form", class: 'row') do
+  div
+    h6 Filter Categories:
+    = collection_check_boxes(nil, :categories, @categories, :to_s, :to_s, { checked: params[:categories], include_hidden: false }, class: 'btn-check', onChange: 'this.form.submit();') do |check_box|
+      = check_box.check_box
+      = check_box.label(class: 'btn btn-sm btn-success m-1')
+  br
+  div
+    h6 Time Period:
+    = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period]), class: 'form-select form-select-sm', onChange: 'this.form.submit();'
 
-
-= form_tag(products_path, method: :get, id: "category-form") do
-  h1 Time Period:
-  = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period])
-
-  h1 Filter Categories:
-  = collection_check_boxes(nil, :categories, @categories, :to_s, :to_s, { checked: params[:categories], include_hidden: false })
 
 h1
   | Products
@@ -19,11 +22,11 @@ h1
 = will_paginate @products
 / = link_to "New product", new_product_path
 
-
-javascript:
-    document.addEventListener("DOMContentLoaded", function () {
-        var categoryForm = document.getElementById("category-form");
-        categoryForm.addEventListener("click", function (e) {
-            categoryForm.submit()
-        });
-    });
+/
+//javascript:
+//    document.addEventListener("DOMContentLoaded", function () {
+//        var categoryForm = document.getElementById("products-filter-form");
+//        categoryForm.addEventListener("click", function (e) {
+//            categoryForm.submit()
+//        });
+//    });
