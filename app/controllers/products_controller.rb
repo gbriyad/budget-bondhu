@@ -4,19 +4,38 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @products = Product.get_profitable_products(@start_time)
-    @categories = @products.pluck(:category).uniq
+    @profitable_products = Product.get_profitable_products(@start_time)
+    @profitable_categories = @profitable_products.pluck(:category).uniq
 
-    @products = @products.where(category: params[:categories]) if params[:categories].present?
-    @products = @products.paginate(page: params[:page], per_page: 10)
+    @profitable_products = @profitable_products.where(category: params[:categories]) if params[:categories].present?
+    @profitable_products = @profitable_products.paginate(page: params[:profitable_products_page], per_page: 10)
 
-    change_rates_map = Product.get_product_ids_to_price_change_rates(@products.pluck(:id), @start_time)
-    min_prices_map = Product.get_product_ids_to_min_prices(@products.pluck(:id), @start_time)
-    max_prices_map = Product.get_product_ids_to_max_prices(@products.pluck(:id), @start_time)
+    change_rates_map = Product.get_product_ids_to_price_change_rates(@profitable_products.pluck(:id), @start_time)
+    min_prices_map = Product.get_product_ids_to_min_prices(@profitable_products.pluck(:id), @start_time)
+    max_prices_map = Product.get_product_ids_to_max_prices(@profitable_products.pluck(:id), @start_time)
 
     # @products = @products.includes(:prices) # need eager loading before assigning attribute values, otherwise attribute values will be nil
 
-    @products.each do |product|
+    @profitable_products.each do |product|
+      product.change_rate = change_rates_map[product.id]
+      product.min_price = min_prices_map[product.id]
+      product.max_price = max_prices_map[product.id]
+    end
+
+
+    @non_profitable_products = Product.get_non_profitable_products(@start_time)
+    @non_profitable_categories = @non_profitable_products.pluck(:category).uniq
+
+    @non_profitable_products = @non_profitable_products.where(category: params[:categories]) if params[:categories].present?
+    @non_profitable_products = @non_profitable_products.paginate(page: params[:non_profitable_products_page], per_page: 10)
+
+    change_rates_map = Product.get_product_ids_to_price_change_rates(@non_profitable_products.pluck(:id), @start_time)
+    min_prices_map = Product.get_product_ids_to_min_prices(@non_profitable_products.pluck(:id), @start_time)
+    max_prices_map = Product.get_product_ids_to_max_prices(@non_profitable_products.pluck(:id), @start_time)
+
+    # @products = @products.includes(:prices) # need eager loading before assigning attribute values, otherwise attribute values will be nil
+
+    @non_profitable_products.each do |product|
       product.change_rate = change_rates_map[product.id]
       product.min_price = min_prices_map[product.id]
       product.max_price = max_prices_map[product.id]

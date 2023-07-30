@@ -1,18 +1,29 @@
-table
-  tr
-    td = image_tag product.image_url, size: "100x100"
-    td
-      p
-        strong
-          | Name:
-        = product.name + '(' + product.quantity + ')'
-      p
-        strong
-          | Category:
-        = product.category
-      = p product.change_rate, product.min_price, product.max_price
+/ table
+/   tr
+/     td = image_tag product.image_url, size: "100x100"
+/     td
+/       p
+/         strong
+/           | Name:
+/         = product.name + '(' + product.quantity + ')'
+/       p
+/         strong
+/           | Category:
+/         = product.category
+/       = p product.change_rate, product.min_price, product.max_price
 
-
-
-= line_chart [{name: 'price', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :original_price)},
-              {name: 'discount', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :discount_price)}], min: nil, points: false
+.row.mt-4
+  .col-6
+    .row
+      .col-4
+        = image_tag product.image_url, size: "80x80"
+      .col-8
+        p
+          = product.name + '(' + product.quantity + ')'
+        p
+          = product.category
+        = p number_with_precision(product.change_rate, precision: 2), product.min_price, product.max_price
+  .col-6
+    = line_chart [{name: '', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :original_price)},
+                  {name: '', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :discount_price)}],
+                  min: nil, max: nil, points: false, height: '160px', legend: false

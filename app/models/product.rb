@@ -12,6 +12,14 @@ class Product < ApplicationRecord
     where(id: sorted_product_ids).order_by_ids(sorted_product_ids)
   end
 
+  def self.get_non_profitable_products(start_time)
+    product_ids_to_price_change_rates = get_product_ids_to_price_change_rates(all.pluck(:id), start_time)
+    product_ids_to_price_change_rates.select! {|x,v| v > 0.0}
+
+    sorted_product_ids = product_ids_to_price_change_rates.sort_by {|_, change_rate| change_rate }.reverse.map(&:first)
+    where(id: sorted_product_ids).order_by_ids(sorted_product_ids)
+  end
+
   def self.get_product_ids_to_price_change_rates(product_ids, start_time)
 
     product_ids_to_price_change_rates = {}

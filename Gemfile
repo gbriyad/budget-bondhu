@@ -42,7 +42,7 @@ gem "bootsnap", require: false
 gem "kimurai", github: "n-studio/kimuraframework", branch: "dev/ruby-3"
 gem 'slim-rails', '~> 3.6', '>= 3.6.2'
 # gem 'kaminari', '~> 1.2', '>= 1.2.2'
-gem 'will_paginate', '~> 4.0'
+gem 'will_paginate-bootstrap-style', '~> 0.3.0'
 gem 'delayed_job_active_record', '~> 4.1', '>= 4.1.7'
 gem 'whenever', '~> 1.0', require: false
 gem 'pg', '~> 1.5', '>= 1.5.3'
