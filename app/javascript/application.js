@@ -3,4 +3,4 @@
 import "chartkick"
 import "Chart.bundle"
 import 'bootstrap'
-import './prices_chart_loader'
+import 'components/prices_chart_loader'
