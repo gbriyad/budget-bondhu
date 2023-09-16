@@ -12,18 +12,19 @@
 /         = product.category
 /       = p product.change_rate, product.min_price, product.max_price
 
-.row.mt-4
-  .col-6
-    .row
-      .col-4
-        = image_tag product.image_url, size: "80x80"
-      .col-8
-        p
-          = product.name + '(' + product.quantity + ')'
-        p
-          = product.category
-        = p number_with_precision(product.change_rate, precision: 2), product.min_price, product.max_price
-  .col-6
-    = line_chart [{name: '', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :original_price)},
-                  {name: '', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :discount_price)}],
-                  min: nil, max: nil, points: false, height: '160px', legend: false
+.accordion-item.p-1.m-1
+  .accordion-header id = "heading-#{product.id}"
+    .accordion-button.collapsed[type="button" data-bs-toggle="collapse" data-bs-target="#collapse-#{product.id}" aria-expanded="false" aria-controls="collapse-#{product.id}"]
+      .row.mx-0
+        .d-flex.align-items-center.product-image-section.px-0
+          = image_tag product.image_url, size: "80x80"
+        .col.px-1
+          section = product.name + '(' + product.quantity + ')'
+          section = product.category
+          section
+            = p number_with_precision(product.change_rate, precision: 2), product.min_price, product.max_price
+  .accordion-collapse.collapse[aria-labelledby="heading-#{product.id}" data-bs-parent="#accordionExample" id="collapse-#{product.id}"]
+    .accordion-body
+      = line_chart [{ name: '', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :original_price) },
+              { name: '', data: product.prices.where('created_at >= ?', @start_time).pluck(:created_at, :discount_price) }],
+              min: nil, max: nil, points: false, height: '160px', legend: false

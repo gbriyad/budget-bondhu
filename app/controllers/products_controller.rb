@@ -4,42 +4,49 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @profitable_products = Product.get_profitable_products(@start_time)
-    @profitable_categories = @profitable_products.pluck(:category).uniq
+    @profitable_products, @profitable_categories = Rails.cache.fetch("profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:time_period]}", expires_in: 20.minutes) do
+      profitable_products = Product.get_profitable_products(@start_time)
+      profitable_categories = profitable_products.pluck(:category).uniq
 
-    @profitable_products = @profitable_products.where(category: params[:categories]) if params[:categories].present?
-    @profitable_products = @profitable_products.paginate(page: params[:profitable_products_page], per_page: 10)
+      profitable_products = profitable_products.where(category: params[:categories]) if params[:categories].present?
+      profitable_products = profitable_products.paginate(page: params[:profitable_products_page], per_page: 18)
 
-    change_rates_map = Product.get_product_ids_to_price_change_rates(@profitable_products.pluck(:id), @start_time)
-    min_prices_map = Product.get_product_ids_to_min_prices(@profitable_products.pluck(:id), @start_time)
-    max_prices_map = Product.get_product_ids_to_max_prices(@profitable_products.pluck(:id), @start_time)
+      change_rates_map = Product.get_product_ids_to_price_change_rates(profitable_products.pluck(:id), @start_time)
+      min_prices_map = Product.get_product_ids_to_min_prices(profitable_products.pluck(:id), @start_time)
+      max_prices_map = Product.get_product_ids_to_max_prices(profitable_products.pluck(:id), @start_time)
 
-    # @products = @products.includes(:prices) # need eager loading before assigning attribute values, otherwise attribute values will be nil
+      # @products = @products.includes(:prices) # need eager loading before assigning attribute values, otherwise attribute values will be nil
 
-    @profitable_products.each do |product|
-      product.change_rate = change_rates_map[product.id]
-      product.min_price = min_prices_map[product.id]
-      product.max_price = max_prices_map[product.id]
+      profitable_products.each do |product|
+        product.change_rate = change_rates_map[product.id]
+        product.min_price = min_prices_map[product.id]
+        product.max_price = max_prices_map[product.id]
+      end
+
+      [profitable_products, profitable_categories]
     end
+    
+    @non_profitable_products, @non_profitable_categories = Rails.cache.fetch("non_profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:time_period]}", expires_in: 20.minutes) do
+      non_profitable_products = Product.get_non_profitable_products(@start_time)
+      non_profitable_categories = non_profitable_products.pluck(:category).uniq
 
+      non_profitable_products = non_profitable_products.where(category: params[:categories]) if params[:categories].present?
+      non_profitable_products = non_profitable_products.paginate(page: params[:non_profitable_products_page], per_page: 18)
 
-    @non_profitable_products = Product.get_non_profitable_products(@start_time)
-    @non_profitable_categories = @non_profitable_products.pluck(:category).uniq
+      change_rates_map = Product.get_product_ids_to_price_change_rates(non_profitable_products.pluck(:id), @start_time)
+      min_prices_map = Product.get_product_ids_to_min_prices(non_profitable_products.pluck(:id), @start_time)
+      max_prices_map = Product.get_product_ids_to_max_prices(non_profitable_products.pluck(:id), @start_time)
 
-    @non_profitable_products = @non_profitable_products.where(category: params[:categories]) if params[:categories].present?
-    @non_profitable_products = @non_profitable_products.paginate(page: params[:non_profitable_products_page], per_page: 10)
+      # @products = @products.includes(:prices) # need eager loading before assigning attribute values, otherwise attribute values will be nil
 
-    change_rates_map = Product.get_product_ids_to_price_change_rates(@non_profitable_products.pluck(:id), @start_time)
-    min_prices_map = Product.get_product_ids_to_min_prices(@non_profitable_products.pluck(:id), @start_time)
-    max_prices_map = Product.get_product_ids_to_max_prices(@non_profitable_products.pluck(:id), @start_time)
-
-    # @products = @products.includes(:prices) # need eager loading before assigning attribute values, otherwise attribute values will be nil
-
-    @non_profitable_products.each do |product|
-      product.change_rate = change_rates_map[product.id]
-      product.min_price = min_prices_map[product.id]
-      product.max_price = max_prices_map[product.id]
+      non_profitable_products.each do |product|
+        product.change_rate = change_rates_map[product.id]
+        product.min_price = min_prices_map[product.id]
+        product.max_price = max_prices_map[product.id]
+      end
+      [non_profitable_products, non_profitable_categories]
     end
+    
   end
 
   # GET /products/1 or /products/1.json
@@ -110,8 +117,8 @@ class ProductsController < ApplicationController
     if Price.time_periods.values.include?(time_period_int)
       @start_time = time_period_int.seconds.ago
     else
-      params[:time_period] = 1.week
-      @start_time = 1.week.ago
+      params[:time_period] = 2.weeks
+      @start_time = 2.weeks.ago
     end
   end
 end

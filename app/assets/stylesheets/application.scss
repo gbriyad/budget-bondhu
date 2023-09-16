@@ -33,3 +33,41 @@
 {
   background-color: #000000;
 }
+
+#filter_section {
+  box-shadow: 0 0 2px;
+  border-radius: 10px;
+}
+
+#profitable_products {
+  box-shadow: 0 0 2px;
+  border-radius: 10px;
+}
+
+#non_profitable_products {
+  box-shadow: 0 0 2px;
+  border-radius: 10px;
+}
+
+.product-section {
+  //box-shadow: 0 0 2px;
+  //border-radius: 4px;
+}
+
+.accordion-item {
+  border-radius: 10px !important;
+}
+
+.accordion-button, .accordion-body {
+  padding: 0;
+}
+
+.accordion-button:not(.collapsed) {
+  color: unset;
+  background-color: unset;
+  box-shadow: unset;
+}
+
+.product-image-section {
+  width: 80px;
+}

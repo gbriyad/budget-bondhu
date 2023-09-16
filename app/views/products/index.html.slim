@@ -1,29 +1,35 @@
 p[style="color: green"]
   = notice
-= form_tag(products_path, method: :get, id: "products-filter-form", class: 'row') do
-  div
-    h6 Filter Categories:
-    .d-flex.overflow-auto
-      = collection_check_boxes(nil, :categories, @profitable_categories, :to_s, :to_s, { checked: params[:categories], include_hidden: false }, class: 'btn-check', onChange: 'this.form.submit();') do |check_box|
-        = check_box.check_box
-        = check_box.label(class: 'btn btn-sm btn-outline-success m-1 text-nowrap')
-  div.mt-3
-    h6 Time Period:
-    = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period]), class: 'form-select form-select-sm', onChange: 'this.form.submit();'
+#filter_section.p-3.my-3
+  = form_tag(products_path, method: :get, id: "products-filter-form", class: 'row') do
+    div
+      h6 Filter Categories:
+      .d-flex.overflow-auto
+        = collection_check_boxes(nil, :categories, @profitable_categories, :to_s, :to_s, { checked: params[:categories], include_hidden: false }, class: 'btn-check', onChange: 'this.form.submit();') do |check_box|
+          = check_box.check_box
+          = check_box.label(class: 'btn btn-sm btn-outline-success m-1 text-nowrap')
+    div.mt-3
+      h6 Time Period:
+      = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period]), class: 'form-select form-select-sm', onChange: 'this.form.submit();'
 
-h3.text-center.m-4
-  | Profitable Products
-#profitable_products.row
-  - @profitable_products.each do |product|
-    .col-lg-6.col-sm-12.fade-in-top
-      = render product
+#profitable_products.p-2.my-3
+  h3.text-center.my-3
+    | Profitable Products
+  .row.mx-0.px-0
+    - @profitable_products.each do |product|
+      - cache product do
+        .product-section.col-xl-4.col-lg-6.col-sm-12.px-0
+          = render product
   .m-4
-    = will_paginate @profitable_products, param_name: 'profitable_products_page', list_classes: %w(pagination justify-content-center)
-h3.text-center.m-4
-  | Non-Profitable Products
-#non_profitable_products.row
-  - @non_profitable_products.each do |product|
-    .col-lg-6.col-sm-12
-      = render product
+    = will_paginate @profitable_products, param_name: 'profitable_products_page', list_classes: %w(pagination justify-content-center), inner_window: 1, outer_window: 1
+
+#non_profitable_products.p-2.my-3
+  h3.text-center.my-3
+    | Non-Profitable Products
+  .row.mx-0.px-0
+    - @non_profitable_products.each do |product|
+      - cache product do
+        .product-section.col-xl-4.col-lg-6.col-sm-12.px-0
+          = render product
   .m-4
-    = will_paginate @non_profitable_products, param_name: 'non_profitable_products_page', list_classes: %w(pagination justify-content-center)
+    = will_paginate @non_profitable_products, param_name: 'non_profitable_products_page', list_classes: %w(pagination justify-content-center), inner_window: 1, outer_window: 1
