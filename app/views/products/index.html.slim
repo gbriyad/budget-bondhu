@@ -17,7 +17,7 @@ p[style="color: green"]
     | Profitable Products
   .row.mx-0.px-0
     - @profitable_products.each do |product|
-      - cache product do
+      - cache "profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}" do
         .product-section.col-xl-4.col-lg-6.col-sm-12.px-0
           = render product
   .m-4
@@ -28,7 +28,7 @@ p[style="color: green"]
     | Non-Profitable Products
   .row.mx-0.px-0
     - @non_profitable_products.each do |product|
-      - cache product do
+      - cache "non-profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}" do
         .product-section.col-xl-4.col-lg-6.col-sm-12.px-0
           = render product
   .m-4
