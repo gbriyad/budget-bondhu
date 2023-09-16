@@ -8,6 +8,7 @@ html
     = csp_meta_tag
     = stylesheet_link_tag "application"
     = javascript_importmap_tags
-  body.container
+  body
     = render 'layouts/navbar'
-    = yield
+    .container
+      = yield
