@@ -1,10 +1,10 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy]
+  before_action :set_product, only: %i[ show edit update destroy prices_chart]
   before_action :set_default_time_period, only: %i[ index ]
 
   # GET /products or /products.json
   def index
-    @profitable_products, @profitable_categories = Rails.cache.fetch("profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:time_period]}", expires_in: 20.minutes) do
+    @profitable_products, @profitable_categories = Rails.cache.fetch("profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:time_period]}_#{Price.last.id}", expires_in: 2.days) do
       profitable_products = Product.get_profitable_products(@start_time)
       profitable_categories = profitable_products.pluck(:category).uniq
 
@@ -101,10 +101,9 @@ class ProductsController < ApplicationController
   end
 
   def prices_chart
-    data = Rails.cache.fetch("prices_chart_#{params[:id]}_#{params[:start_time]}") do
-      product = Product.find(params[:id])
-      [{ name: 'original-price', data: product.prices.where('created_at >= ?', params[:start_time]).pluck(:created_at, :original_price) },
-       { name: 'discounted-price', data: product.prices.where('created_at >= ?', params[:start_time]).pluck(:created_at, :discount_price) }
+    data = Rails.cache.fetch("prices_chart_#{params[:id]}_#{params[:start_time]}_#{@product.updated_at}", expires_in: 20.minutes) do
+      [{ name: 'original-price', data: @product.prices.where('created_at >= ?', params[:start_time]).pluck(:created_at, :original_price) },
+       { name: 'discounted-price', data: @product.prices.where('created_at >= ?', params[:start_time]).pluck(:created_at, :discount_price) }
       ]
     end
     render json: data
