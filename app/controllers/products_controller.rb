@@ -124,10 +124,10 @@ class ProductsController < ApplicationController
     time_period_int = params[:time_period]&.to_i
 
     if Price.time_periods.values.include?(time_period_int)
-      @start_time = time_period_int.seconds.ago
+      @start_time = time_period_int.seconds.ago.beginning_of_day
     else
       params[:time_period] = 2.weeks
-      @start_time = 2.weeks.ago
+      @start_time = 2.weeks.ago.beginning_of_day
     end
   end
 end
