@@ -1,14 +1,13 @@
-p[style="color: green"]
+div[style="color: green"]
   = notice
-#filter_section.p-3.my-3
-  = form_tag(products_path, method: :get, id: "products-filter-form", class: 'row') do
+#filter_section
+  = form_tag(products_path, method: :get, id: "products-filter-form") do
     div
       h6 Filter Categories:
-      .d-flex.overflow-auto
-        = select_tag :categories, options_for_select(@profitable_categories, selected: params[:categories]), class: 'form-select form-select-sm', onChange: 'this.form.submit();', include_blank: 'All Products'
+      = select_tag :categories, options_for_select(@profitable_categories, selected: params[:categories]), class: 'form-select', include_blank: 'All Products', onChange: 'this.size=1; this.blur(); this.form.submit();', onfocus: 'this.size=10;', onblur: 'this.size=0;'
     div.mt-3
       h6 Time Period:
-      = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period]), class: 'form-select form-select-sm', onChange: 'this.form.submit();'
+      = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period]), class: 'form-select', onChange: 'this.size=1; this.blur(); this.form.submit();', onfocus: 'this.size=6;', onblur: 'this.size=0;'
 
 #profitable_products.p-2.my-3
   h3.text-center.my-3
