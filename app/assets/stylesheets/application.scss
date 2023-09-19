@@ -39,7 +39,7 @@ $font-color: #172F58;
 body {
   background-color: #F9F9F9;
   color: $font-color;
-  font-family: Inter, serif;
+  font-family: Inter, sans-serif !important;
 
   .navbar {
     background-color: $primary-color;
@@ -60,40 +60,109 @@ body {
       background-color: #D8F1EB;
     }
   }
+
+  #products_tab {
+    border-radius: 10px;
+    border: 1px solid #4CC0AC;
+    background: #FFF;
+    height: 36px;
+
+    .btn {
+      height: 35px;
+      border: unset;
+      border-radius: 8px;
+      background-color: unset;
+      color: $primary-color;
+
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+    :focus {
+      box-shadow: unset;
+    }
+
+    .btn.active {
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+
+      border: unset;
+      border-radius: 8px;
+      background-color: $primary-color;
+      color: white;
+    }
+  }
 }
 
 
-//#profitable_products {
-//  box-shadow: 0 0 2px;
-//  border-radius: 10px;
-//}
-//
-//#non_profitable_products {
-//  box-shadow: 0 0 2px;
-//  border-radius: 10px;
-//}
+#profitable_products {
+  .product-change-rate {
+    color: #229A16;
+  }
+}
+
+#non_profitable_products {
+  .product-change-rate {
+    color: #FF4842;
+  }
+}
 
 .product-section {
-  //box-shadow: 0 0 2px;
-  //border-radius: 4px;
+  border-radius: 8px;
+  background: #FFF;
+  box-shadow: 0px 2px 6px 0px rgba(33, 37, 41, 0.10);
 }
 
 .accordion-item {
-  border-radius: 10px !important;
-}
+  border: unset;
 
-.accordion-button, .accordion-body {
-  padding: 0;
-}
+  .accordion-button {
+    font-size: 14px;
+    color: $font-color;
 
-.accordion-button:not(.collapsed) {
-  color: unset;
-  background-color: unset;
-  box-shadow: unset;
-}
+    .product-info {
+      .col-6 {
+        padding-right: 0;
+      }
 
-.product-image-section {
-  width: 80px;
+      .right-column {
+        padding-left: 32px;
+      }
+
+      .product-name {
+        min-height: 40px;
+        font-weight: 500;
+      }
+
+      .product-change-rate {
+        font-weight: 500;
+      }
+
+      .value {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .accordion-button, .accordion-body {
+    padding: 0;
+
+    .product-image-section {
+      width: 80px;
+    }
+  }
+  ::after {
+    background-size: 0.8rem;
+  }
+
+  .accordion-button:not(.collapsed) {
+    color: unset;
+    background-color: unset;
+    box-shadow: unset;
+  }
 }
 
 .pagination {

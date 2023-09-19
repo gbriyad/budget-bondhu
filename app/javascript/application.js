@@ -4,3 +4,4 @@ import "chartkick"
 import "Chart.bundle"
 import 'bootstrap'
 import 'components/prices_chart_loader'
+import 'components/products_tab_click_handler'

@@ -1,14 +1,30 @@
-.accordion-item.p-1.m-1
+.accordion-item
   .accordion-header id = "heading-#{product.id}"
     .accordion-button.collapsed[type="button" data-bs-toggle="collapse" data-bs-target="#collapse-#{product.id}" aria-expanded="false" aria-controls="collapse-#{product.id}"]
       .row.mx-0
         .d-flex.align-items-center.product-image-section.px-0
           = image_tag product.image_url, size: "80x80"
-        .col.px-1
-          section = product.name + ' (' + product.quantity + ')'
-          section = product.category
-          section
-            = p number_with_precision(product.change_rate, precision: 2), product.min_price, product.max_price
+        .col.px-0.product-info
+          .row.mx-0
+            .col-12.pb-2.product-name = show_product_name(product)
+            .col-6
+              div(style="float:left")
+                | Current: ৳
+              .value
+                = product.prices.last.lowest_price
+            .col-6.right-column.product-change-rate
+              = show_product_change_rate(product)
+            .col-6
+              div(style="float:left")
+                | Min: ৳
+              .value
+                = product.min_price
+            .col-6.right-column
+              div(style="float:left")
+                | Max: ৳
+              .value
+                = product.max_price
+
   .accordion-collapse.collapse[aria-labelledby="heading-#{product.id}" data-bs-parent="#accordionExample" id="collapse-#{product.id}" data-product-id="#{product.id}" data-chart-source-url="#{prices_chart_product_path(product, {start_time: @start_time})}"]
     .accordion-body
       = line_chart nil, id: "product-chart-#{product.id}", min: nil, max: nil, points: false, height: '160px', legend: false, class: 'line-chart'

@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
         elem.addEventListener("show.bs.collapse", function(event) {
             let product_id = event.target.getAttribute('data-product-id');
             let source_url = event.target.getAttribute('data-chart-source-url');
-            let chart = Chartkick.charts[`product-chart-${product_id}`];
+            document.querySelector(`#product-chart-${product_id}`).textContent = 'Loading';
 
+            let chart = Chartkick.charts[`product-chart-${product_id}`];
             chart.updateData(source_url);
         });
     });
