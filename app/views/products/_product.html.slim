@@ -7,24 +7,26 @@
         .col.px-0.product-info
           .row.mx-0
             .col-12.pb-2.product-name = show_product_name(product)
-            .col-6
-              div(style="float:left")
+            .col-6.d-flex.align-items-center
+              div
                 | Current: ৳
               .value
                 = product.prices.last.lowest_price
-            .col-6.right-column.product-change-rate
-              = show_product_change_rate(product)
-            .col-6
-              div(style="float:left")
+            .col-6.d-flex.right-column
+              .product-change-rate
+                = show_growth_icon(product)
+                = show_product_change_rate(product)
+            .col-6.d-flex
+              div
                 | Min: ৳
               .value
                 = product.min_price
-            .col-6.right-column
-              div(style="float:left")
+            .col-6.d-flex.right-column
+              div
                 | Max: ৳
               .value
                 = product.max_price
 
   .accordion-collapse.collapse[aria-labelledby="heading-#{product.id}" data-bs-parent="#accordionExample" id="collapse-#{product.id}" data-product-id="#{product.id}" data-chart-source-url="#{prices_chart_product_path(product, {start_time: @start_time})}"]
     .accordion-body
-      = line_chart nil, id: "product-chart-#{product.id}", min: nil, max: nil, points: false, height: '160px', legend: false, class: 'line-chart'
+      = line_chart nil, id: "product-chart-#{product.id}", min: nil, max: nil, points: false, height: '160px', legend: false, class: 'line-chart', colors: %w[#4CC0AC #FF4842]

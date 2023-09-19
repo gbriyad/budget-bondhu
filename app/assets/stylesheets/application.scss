@@ -100,7 +100,7 @@ body {
 
 #profitable_products {
   .product-change-rate {
-    color: #229A16;
+    color: $primary-color;
   }
 }
 
@@ -113,7 +113,7 @@ body {
 .product-section {
   border-radius: 8px;
   background: #FFF;
-  box-shadow: 0px 2px 6px 0px rgba(33, 37, 41, 0.10);
+  box-shadow: 0 2px 6px 0 rgba(33, 37, 41, 0.10);
 }
 
 .accordion-item {
@@ -139,6 +139,10 @@ body {
 
       .product-change-rate {
         font-weight: 500;
+        img {
+          height: 24px;
+          margin-right: 2px;
+        }
       }
 
       .value {
