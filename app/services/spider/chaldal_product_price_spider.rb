@@ -25,15 +25,23 @@ module Spider
 
     def parse_product_or_category_page(response, url:, data: {})
       if response.css(".category-links-wrapper").count > 0
+        retry_count = 0
+
         response.css(".category-links-wrapper a").each do |a|
           request_to :parse_product_or_category_page, url: absolute_url(a[:href], base: url)
         rescue => e
           Rails.logger.error e.message
           p e.message
-
           Rails.logger.error 'retrying'
           p 'retrying'
-          retry
+
+          retry_count += 1
+          retry if retry_count < 3
+
+          Rails.logger.error 'retrying limit exceeded'
+          p 'retrying limit exceeded'
+
+          retry_count = 0
         end
       else
         parse_product_list_page(response, url: url)
