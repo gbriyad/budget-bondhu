@@ -35,7 +35,7 @@ div[style="color: green"]
 #profitable_products.mt-3 class="#{'d-none' unless should_show_profitable_tab}"
   .row.mx-0.px-0
     - @profitable_products.each do |product|
-      - cache "profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}" do
+      - cache "profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}", expires_in: 2.days do
         .col-xl-4.col-lg-6.col-sm-12.px-0.mt-2
           .product-section.mx-xl-1.mx-lg-1.p-2
             = render product
@@ -46,7 +46,7 @@ div[style="color: green"]
 #non_profitable_products.mt-3 class="#{'d-none' if should_show_profitable_tab}"
   .row.mx-0.px-0
     - @non_profitable_products.each do |product|
-      - cache "non-profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}" do
+      - cache "non-profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}", expires_in: 2.days do
         .col-xl-4.col-lg-6.col-sm-12.px-0.mt-2
           .product-section.mx-xl-1.mx-lg-1.p-2
             = render product

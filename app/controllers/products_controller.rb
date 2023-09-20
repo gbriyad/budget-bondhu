@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
       [profitable_products, profitable_categories]
     end
     
-    @non_profitable_products, @non_profitable_categories = Rails.cache.fetch("non_profitable_products_#{params[:categories]}_#{params[:non_profitable_products_page]}_#{params[:time_period]}", expires_in: 20.minutes) do
+    @non_profitable_products, _ = Rails.cache.fetch("non_profitable_products_#{params[:categories]}_#{params[:non_profitable_products_page]}_#{params[:time_period]}_#{Price.last.id}", expires_in: 2.days) do
       non_profitable_products = Product.get_non_profitable_products(@start_time)
       non_profitable_categories = non_profitable_products.pluck(:category).uniq
 
