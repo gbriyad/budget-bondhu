@@ -51,5 +51,5 @@ div[style="color: green"]
           .product-section.mx-xl-1.mx-lg-1.p-2
             = render product
   .m-4
-    - cache "non_profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:non_profitable_products_page]}_#{params[:time_period]}", expires_in: 2.days do
+    - cache "non_profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:non_profitable_products_page]}_#{params[:time_period]}_#{Price.last.id}", expires_in: 2.days do
       = will_paginate @non_profitable_products, param_name: 'non_profitable_products_page', list_classes: %w(pagination justify-content-center), inner_window: 1, outer_window: 1, params: {products_tab: 'non-profitable'}
