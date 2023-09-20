@@ -5,3 +5,4 @@ import "Chart.bundle"
 import 'bootstrap'
 import 'components/prices_chart_loader'
 import 'components/products_tab_click_handler'
+import 'components/custom_option_select'

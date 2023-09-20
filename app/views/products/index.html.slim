@@ -1,20 +1,38 @@
+- should_show_profitable_tab = show_profitable_tab?(params[:products_tab])
 div[style="color: green"]
   = notice
 #filter_section
   = form_tag(products_path, method: :get, id: "products-filter-form") do
+    input[type="text" value="#{params[:products_tab]}" name="products_tab" id="products_tab_input" hidden]
+
     div
       h6 Filter Categories:
-      = select_tag :categories, options_for_select(@profitable_categories, selected: params[:categories]), class: 'form-select', include_blank: 'All Products', onChange: 'this.size=1; this.blur(); this.form.submit();', onfocus: 'this.size=10;', onblur: 'this.size=0;'
+      .dropdown onclick='this.classList.toggle("active");'
+        - is_all_product_category = (params[:categories].nil? || params[:categories].empty?)
+        input.text-box[type="text" value="#{params[:categories]}" name="categories" id="categories_hidden" hidden]
+        input.text-box[type="text" value="#{is_all_product_category ? Product::CATEGORY_ALL_PRODUCTS : params[:categories]}" name="categories" id="categories" readonly]
+          .options
+            div class="#{'active' if is_all_product_category}" = Product::CATEGORY_ALL_PRODUCTS
+            - @profitable_categories.each do |category|
+              div value=category class="#{'active' if category==params[:categories]}"
+                = category
     div.mt-3
       h6 Time Period:
-      = select_tag :time_period, options_for_select(Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}, selected: params[:time_period]), class: 'form-select', onChange: 'this.size=1; this.blur(); this.form.submit();', onfocus: 'this.size=6;', onblur: 'this.size=0;'
+      .dropdown onclick='this.classList.toggle("active");'
+        input.text-box[type="text" value="#{params[:time_period]}" name="time_period" id="time_period_hidden" hidden]
+        input.text-box[type="text" value="#{Price.time_periods.key(params[:time_period].to_i).humanize.capitalize}" name="time_period" id="time_period" readonly]
+          .options
+            - Price.time_periods.map {|k, v| [k.humanize.capitalize, v]}.each do |name, value|
+              div value=value class="#{'active' if value == params[:time_period].to_i}"
+                = name
+
 #products_tab.mt-4
-  button#profitable_product_btn.btn.btn-primary.active.w-50
+  button#profitable_product_btn.btn.btn-primary.w-50 class="#{'active' if should_show_profitable_tab}"
     | Profitable Products
-  button#non_profitable_product_btn.btn.btn-primary.w-50
+  button#non_profitable_product_btn.btn.btn-primary.w-50 class="#{'active' unless should_show_profitable_tab}"
     | Non-Profitable Products
 
-#profitable_products.mt-3
+#profitable_products.mt-3 class="#{'d-none' unless should_show_profitable_tab}"
   .row.mx-0.px-0
     - @profitable_products.each do |product|
       - cache "profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}" do
@@ -23,9 +41,9 @@ div[style="color: green"]
             = render product
   .m-4
     - cache "profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:non_profitable_products_page]}_#{params[:time_period]}_#{Price.last.id}", expires_in: 2.days do
-      = will_paginate @profitable_products, param_name: 'profitable_products_page', list_classes: %w(pagination justify-content-center), inner_window: 1, outer_window: 1
+      = will_paginate @profitable_products, param_name: 'profitable_products_page', list_classes: %w(pagination justify-content-center), inner_window: 1, outer_window: 1, params: {products_tab: 'profitable'}
 
-#non_profitable_products.mt-3.d-none
+#non_profitable_products.mt-3 class="#{'d-none' if should_show_profitable_tab}"
   .row.mx-0.px-0
     - @non_profitable_products.each do |product|
       - cache "non-profitable#{product.id}-#{params[:time_period]}-#{product.updated_at}" do
@@ -34,4 +52,4 @@ div[style="color: green"]
             = render product
   .m-4
     - cache "non_profitable_products_#{params[:categories]}_#{params[:profitable_products_page]}_#{params[:non_profitable_products_page]}_#{params[:time_period]}", expires_in: 2.days do
-      = will_paginate @non_profitable_products, param_name: 'non_profitable_products_page', list_classes: %w(pagination justify-content-center), inner_window: 1, outer_window: 1
+      = will_paginate @non_profitable_products, param_name: 'non_profitable_products_page', list_classes: %w(pagination justify-content-center), inner_window: 1, outer_window: 1, params: {products_tab: 'non-profitable'}

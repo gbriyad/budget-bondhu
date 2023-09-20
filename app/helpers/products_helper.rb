@@ -11,4 +11,9 @@ module ProductsHelper
     image_file_name = product.change_rate > 0.0 ? 'positive-growth.svg' : 'negative-growth.svg'
     image_tag image_file_name, class: 'img-fluid'
   end
+
+  def show_profitable_tab?(products_tab_param)
+    products_tab_param ||= 'profitable'
+    products_tab_param.empty? || products_tab_param == 'profitable'
+  end
 end

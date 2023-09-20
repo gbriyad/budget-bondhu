@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(event) {
+    let product_tab_input = document.querySelector('#products_tab_input');
     let profitable_product_btn = document.querySelector('#products_tab #profitable_product_btn');
     let non_profitable_product_btn = document.querySelector('#products_tab #non_profitable_product_btn');
     let profitable_products_section = document.querySelector('#profitable_products');
@@ -18,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
         profitable_products_section.classList.remove('d-none');
         non_profitable_products_section.classList.add('d-none');
+
+        product_tab_input.value = 'profitable';
     }
 
     function non_profitable_product_btn_click() {
@@ -26,6 +29,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
         non_profitable_products_section.classList.remove('d-none');
         profitable_products_section.classList.add('d-none');
+
+        product_tab_input.value = 'non-profitable';
     }
 });
 

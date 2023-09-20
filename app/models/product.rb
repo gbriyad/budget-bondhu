@@ -2,6 +2,8 @@ class Product < ApplicationRecord
   attr_accessor :change_rate, :min_price, :max_price
   has_many :prices
 
+  CATEGORY_ALL_PRODUCTS = 'All Products'.freeze
+
   ########################### class methods start ##########################
 
   def self.get_profitable_products(start_time)
