@@ -1,0 +1,32 @@
+#how_it_works.modal.fade[tabindex="-1" aria-labelledby="how_it_works_modal_label" aria-hidden="true"]
+  .modal-dialog
+    .modal-content
+      / .modal-header.p-3.text-center
+      /   h5#how_it_works_modal_label.modal-title.w-100
+      /     | About Us
+      / div[data-bs-dismiss="modal" aria-label="Close"]
+      /   = image_tag 'x-circle.svg', class: 'img-fluid'
+      .modal-body
+        h6.section-header.p-2
+          | About Our Website:
+        div.px-2.py-2
+          p <b>We Don't Make Money:</b> Our website doesn't earn any profits. It's here to assist you in spending less money when you shop.
+          p <b>Quick Price Comparison:</b> Easily identify products with competitive pricing ("profitable to buy") and those with higher prices ("not profitable to buy").
+          p <b>Price Trends:</b> We reveal how prices for everyday items change. This helps you know if something is currently a good deal, even though the exact price may differ in other stores.
+        h6.section-header.p-2
+          | How It Works:
+        div.px-2.py-2
+          p <b>Reference Pricing Data:</b> We use pricing data from a specific website, chaldal.com, as our reference point. Prices are collected and updated daily within our system.
+          p <b>Marketplace Price Indicator:</b> Our approach assumes that, if a product's price goes up or down on <a>chaldal.com</a>, it probably changes everywhere else too. So, if something's cheaper on chaldal.com today, it's likely cheaper in other places too (even though the exact price might not be the same).
+          p <b>Profitability Analysis:</b> We analyze historical price data to calculate percentage changes. This information allows us to highlight the products currently offering the best value ("cheapest now") and those with higher prices. Users can also filter results based on their preferred historical timeframes.
+        h6.section-header.p-2
+          | Your Feedback:
+        p.px-2.py-1
+          | I'd love to hear from you! Your feedback is incredibly valuable in making this site even better. Please don't hesitate to share your thoughts and suggestions with me at: <b>gbriyad@gmail.com</b>. I'm all ears!
+        h6.section-header.p-2
+          | Support This Project:
+        p.px-2.py-1
+          | To keep this project going, I'd appreciate your help covering domain & hosting costs. If you'd like to contribute, you can send donations via <b>bKash: 01850305659</b>. Your support means a lot and ensures I can keep providing this resource. Thank you!
+      .modal-footer
+        button.btn.btn-primary.w-100[type="button" data-bs-dismiss="modal"]
+          | Close

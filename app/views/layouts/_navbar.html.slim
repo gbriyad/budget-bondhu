@@ -1,3 +1,12 @@
-nav.navbar.navbar-expand-lg.justify-content-center
-  = link_to '/' do
-    = image_tag 'budget-bondhu-logo.png', class: 'img-fluid p-1',style: 'max-height: 36px;'
+nav.navbar.navbar-expand-lg
+  .container.px-3
+    .row.mx-0.w-100.align-items-center
+      .col-2.px-0
+      .col-8.px-0.d-flex.justify-content-center
+        = link_to '/' do
+          = image_tag 'budget-bondhu-logo.png', class: 'img-fluid p-1', style: 'max-height: 36px;'
+      .col-2.px-0.d-flex.justify-content-end.nav-item
+        div.pe-2[data-bs-toggle="modal" data-bs-target="#how_it_works" style="cursor: pointer;"]
+          = image_tag 'question-icon.svg', class: 'img-fluid'
+
+= render 'layouts/how_it_works_modal'
