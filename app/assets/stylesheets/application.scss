@@ -39,12 +39,15 @@ $font-color: #172F58;
   background-color: $primary-color-on-background;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap');
+@font-face {
+  font-family: Inter;
+  src: url('Inter.woff2') format('woff2');
+}
 
 body {
   background-color: $primary-background-color;
   color: $font-color;
-  font-family: 'Inter', sans-serif !important;
+  font-family: Inter, sans-serif !important;
 
   .navbar {
     background-color: $primary-color;
