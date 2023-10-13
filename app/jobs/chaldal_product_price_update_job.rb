@@ -3,6 +3,8 @@
 
 class ChaldalProductPriceUpdateJob < ApplicationJob
   def perform
+    Rails.logger.info('[ChaldalProductPriceUpdateJob]Starting crawler')
+
     Spider::ChaldalProductPriceSpider.start_crawl_and_get_products do |p|
       unless p[:name].nil? || p[:quantity].nil? || p[:price].nil?
         product = Product.find_or_create_by!(name: p[:name], quantity: p[:quantity])
@@ -21,6 +23,7 @@ class ChaldalProductPriceUpdateJob < ApplicationJob
       end
     end
 
+    Rails.logger.info('[ChaldalProductPriceUpdateJob]Crawling Finished')
     # Spider::ChaldalProductPriceSpiderTest.crawl!
   end
 end
