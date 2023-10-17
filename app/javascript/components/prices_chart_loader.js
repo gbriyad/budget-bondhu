@@ -10,4 +10,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
             chart.updateData(source_url);
         });
     });
+
+    setTimeout(function () {
+        document.querySelector('.product-section .accordion-button').click();
+    }, 100);
 });
