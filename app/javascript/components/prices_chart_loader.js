@@ -13,5 +13,5 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     setTimeout(function () {
         document.querySelector('.product-section .accordion-button').click();
-    }, 100);
+    }, 500);
 });
